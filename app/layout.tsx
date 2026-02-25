@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import "./globals.css";
 
@@ -30,9 +31,10 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body>
+      <body className="flex min-h-screen flex-col">
         <Navbar />
-        <main className="container page-content">{children}</main>
+        <main className="container page-content flex-1">{children}</main>
+        <Footer />
       </body>
     </html>
   );

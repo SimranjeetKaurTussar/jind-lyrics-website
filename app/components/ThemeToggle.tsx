@@ -7,10 +7,6 @@ type Theme = "light" | "dark";
 const STORAGE_KEY = "jind-theme";
 
 function getSystemTheme(): Theme {
-  if (typeof window === "undefined") {
-    return "light";
-  }
-
   return window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light";
@@ -23,48 +19,52 @@ function applyTheme(theme: Theme) {
 }
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window === "undefined") {
-      return "light";
-    }
-
-    const storedTheme = localStorage.getItem(STORAGE_KEY) as Theme | null;
-    return storedTheme ?? getSystemTheme();
-  });
-
-  const [useSystemTheme, setUseSystemTheme] = useState(() => {
-    if (typeof window === "undefined") {
-      return true;
-    }
-
-    return localStorage.getItem(STORAGE_KEY) === null;
-  });
+  const [mounted, setMounted] = useState(false);
+  const [theme, setTheme] = useState<Theme>("light");
+  const [useSystemTheme, setUseSystemTheme] = useState(true);
 
   useEffect(() => {
-    applyTheme(theme);
-  }, [theme]);
+    const init = window.setTimeout(() => {
+      const storedTheme = localStorage.getItem(STORAGE_KEY) as Theme | null;
+      const initialTheme = storedTheme ?? getSystemTheme();
+
+      setTheme(initialTheme);
+      setUseSystemTheme(storedTheme === null);
+      applyTheme(initialTheme);
+      setMounted(true);
+    }, 0);
+
+    return () => window.clearTimeout(init);
+  }, []);
 
   useEffect(() => {
-    if (!useSystemTheme) {
+    if (!mounted || !useSystemTheme) {
       return;
     }
 
     const media = window.matchMedia("(prefers-color-scheme: dark)");
     const handleChange = (event: MediaQueryListEvent) => {
-      setTheme(event.matches ? "dark" : "light");
+      const nextTheme = event.matches ? "dark" : "light";
+      setTheme(nextTheme);
+      applyTheme(nextTheme);
     };
 
     media.addEventListener("change", handleChange);
     return () => media.removeEventListener("change", handleChange);
-  }, [useSystemTheme]);
+  }, [mounted, useSystemTheme]);
 
   const toggleTheme = () => {
     const nextTheme = theme === "dark" ? "light" : "dark";
 
     setTheme(nextTheme);
     setUseSystemTheme(false);
+    applyTheme(nextTheme);
     localStorage.setItem(STORAGE_KEY, nextTheme);
   };
+
+  if (!mounted) {
+    return null;
+  }
 
   const isDark = theme === "dark";
 
