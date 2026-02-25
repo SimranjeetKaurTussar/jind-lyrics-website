@@ -81,9 +81,6 @@ export default function AboutPage() {
             }}
           />
           <div className="relative z-10">
-            <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--border)] bg-[color-mix(in_srgb,var(--surface)_85%,transparent)] text-xl font-bold text-[var(--text)]">
-              J
-            </div>
             <h2 className="text-2xl font-semibold text-[var(--text)]">JIND</h2>
             <p className="text-sm text-[var(--text-soft)]">Punjabi Lyricist</p>
 

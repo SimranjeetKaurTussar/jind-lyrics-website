@@ -9,9 +9,8 @@ const navLinks = [
   { href: "/", label: "Home" },
   { href: "/songs", label: "Songs" },
   { href: "/services", label: "Services" },
-  { href: "/#work", label: "Work" },
-  { href: "/#about", label: "About" },
-  { href: "/#contact", label: "Contact" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function Navbar() {
@@ -54,10 +53,9 @@ export default function Navbar() {
             className="flex items-center gap-2 rounded-md px-1 py-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ring)]"
             aria-label="JIND home"
           >
-            <span className="brand-mark text-sm font-bold">J</span>
             <span className="leading-tight">
               <strong className="block text-sm tracking-[0.2em]">JIND</strong>
-              <small className="text-xs text-[var(--text-soft)]">
+              <small className="text-xs text-[var(--text-soft)] whitespace-nowrap">
                 Punjabi Lyricist
               </small>
             </span>
@@ -71,22 +69,48 @@ export default function Navbar() {
             aria-controls="mobile-nav"
             aria-label="Toggle navigation menu"
           >
-            {isOpen ? "✕" : "☰"}
+            <span className="relative block h-4 w-5">
+              {/* top line */}
+              <span
+                className={[
+                  "absolute left-0 top-0 block h-[2px] w-5 rounded-full bg-current transition duration-200",
+                  isOpen ? "top-1/2 -translate-y-1/2 rotate-45" : "",
+                ].join(" ")}
+              />
+              {/* middle line */}
+              <span
+                className={[
+                  "absolute left-0 top-1/2 block h-[2px] w-5 -translate-y-1/2 rounded-full bg-current transition duration-200",
+                  isOpen ? "opacity-0 scale-x-0" : "opacity-100 scale-x-100",
+                ].join(" ")}
+              />
+              {/* bottom line */}
+              <span
+                className={[
+                  "absolute left-0 bottom-0 block h-[2px] w-5 rounded-full bg-current transition duration-200",
+                  isOpen ? "bottom-1/2 translate-y-1/2 -rotate-45" : "",
+                ].join(" ")}
+              />
+            </span>
           </button>
 
           <div className="hidden items-center gap-1 sm:flex">
             {navLinks.map((link) => (
-              <Link key={link.href} href={link.href} className={linkClasses(link.href)}>
+              <Link
+                key={link.href}
+                href={link.href}
+                className={linkClasses(link.href)}
+              >
                 {link.label}
               </Link>
             ))}
             <ThemeToggle />
-            <a
-              href="#contact"
-              className="cta-link ml-1 bg-[var(--primary)] text-white hover:bg-[var(--primary-soft)]"
+            <Link
+              href="/contact"
+              className="cta-link ml-1 bg-[var(--primary)] text-white hover:bg-[var(--primary-soft)] text-sm whitespace-nowrap"
             >
               Hire Me
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -111,12 +135,12 @@ export default function Navbar() {
             </div>
             <div className="mt-3 flex items-center justify-between gap-2">
               <ThemeToggle />
-              <a
-                href="#contact"
+              <Link
+                href="/contact"
                 className="cta-link bg-[var(--primary)] text-white hover:bg-[var(--primary-soft)]"
               >
                 Hire Me
-              </a>
+              </Link>
             </div>
           </div>
         </div>

@@ -1,36 +1,49 @@
-import Link from "next/link";
-import { songs } from "../../lib/songs";
+"use client";
 
-type SongsPageProps = {
-  searchParams: Promise<{
-    q?: string;
-    genre?: string;
-    mood?: string;
-  }>;
-};
+import Link from "next/link";
+import { useMemo, useState } from "react";
+import { songs } from "../../lib/songs";
 
 function normalize(value: string) {
   return value.trim().toLowerCase();
 }
 
-export default async function SongsPage({ searchParams }: SongsPageProps) {
-  const params = await searchParams;
-  const query = params.q ?? "";
-  const genre = params.genre ?? "all";
-  const mood = params.mood ?? "all";
+export default function SongsPage() {
+  const [query, setQuery] = useState("");
+  const [genre, setGenre] = useState("all");
+  const [mood, setMood] = useState("all");
 
-  const genres = Array.from(new Set(songs.map((song) => song.genre)));
-  const moods = Array.from(new Set(songs.map((song) => song.mood)));
+  const genres = useMemo(
+    () => Array.from(new Set(songs.map((song) => song.genre))).sort(),
+    []
+  );
 
-  const filteredSongs = songs.filter((song) => {
+  const moods = useMemo(
+    () => Array.from(new Set(songs.map((song) => song.mood))).sort(),
+    []
+  );
+
+  const filteredSongs = useMemo(() => {
     const q = normalize(query);
-    const searchableText = [song.title, ...song.lyricsSample].join(" ").toLowerCase();
-    const matchesQuery = q.length === 0 || searchableText.includes(q);
-    const matchesGenre = genre === "all" || song.genre === genre;
-    const matchesMood = mood === "all" || song.mood === mood;
 
-    return matchesQuery && matchesGenre && matchesMood;
-  });
+    return songs.filter((song) => {
+      const searchableText = [song.title, ...(song.lyricsSample ?? [])]
+        .join(" ")
+        .toLowerCase();
+
+      const matchesQuery = q.length === 0 || searchableText.includes(q);
+      const matchesGenre = genre === "all" || song.genre === genre;
+      const matchesMood = mood === "all" || song.mood === mood;
+
+      return matchesQuery && matchesGenre && matchesMood;
+    });
+  }, [query, genre, mood]);
+
+  const handleReset = () => {
+    setQuery("");
+    setGenre("all");
+    setMood("all");
+  };
 
   return (
     <div className="space-y-10 pb-10 pt-8">
@@ -48,15 +61,15 @@ export default async function SongsPage({ searchParams }: SongsPageProps) {
       </section>
 
       <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-[var(--shadow)] md:p-5">
-        <form className="grid gap-3 md:grid-cols-4" method="get">
+        <div className="grid gap-3 md:grid-cols-4">
           <label className="md:col-span-2">
             <span className="mb-1 block text-xs font-medium uppercase tracking-[0.12em] text-[var(--text-soft)]">
               Search title or lyrics
             </span>
             <input
               type="search"
-              name="q"
-              defaultValue={query}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder="Type keywords..."
               className="w-full rounded-xl border border-[var(--border)] bg-[var(--bg-muted)] px-3 py-2 text-sm text-[var(--text)] outline-none transition focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--ring)]"
             />
@@ -67,8 +80,8 @@ export default async function SongsPage({ searchParams }: SongsPageProps) {
               Genre
             </span>
             <select
-              name="genre"
-              defaultValue={genre}
+              value={genre}
+              onChange={(e) => setGenre(e.target.value)}
               className="w-full rounded-xl border border-[var(--border)] bg-[var(--bg-muted)] px-3 py-2 text-sm text-[var(--text)] outline-none transition focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--ring)]"
             >
               <option value="all">All Genres</option>
@@ -85,8 +98,8 @@ export default async function SongsPage({ searchParams }: SongsPageProps) {
               Mood
             </span>
             <select
-              name="mood"
-              defaultValue={mood}
+              value={mood}
+              onChange={(e) => setMood(e.target.value)}
               className="w-full rounded-xl border border-[var(--border)] bg-[var(--bg-muted)] px-3 py-2 text-sm text-[var(--text)] outline-none transition focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--ring)]"
             >
               <option value="all">All Moods</option>
@@ -100,24 +113,23 @@ export default async function SongsPage({ searchParams }: SongsPageProps) {
 
           <div className="flex flex-wrap items-center gap-2 md:col-span-4">
             <button
-              type="submit"
-              className="cta-link bg-[var(--primary)] px-5 py-2.5 text-white hover:bg-[var(--primary-soft)]"
+              type="button"
+              onClick={handleReset}
+              className="cta-link px-5 py-2.5"
             >
-              Apply Filters
-            </button>
-            <Link href="/songs" className="cta-link px-5 py-2.5">
               Reset
-            </Link>
+            </button>
+
+            <p className="text-sm text-[var(--text-soft)]">
+              {filteredSongs.length} result{filteredSongs.length === 1 ? "" : "s"}
+            </p>
           </div>
-        </form>
+        </div>
       </section>
 
       <section>
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-2xl font-semibold text-[var(--text)]">Songs</h2>
-          <p className="text-sm text-[var(--text-soft)]">
-            {filteredSongs.length} result{filteredSongs.length === 1 ? "" : "s"}
-          </p>
         </div>
 
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -126,7 +138,9 @@ export default async function SongsPage({ searchParams }: SongsPageProps) {
               key={song.id}
               className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[var(--shadow)] transition hover:-translate-y-0.5 hover:border-[color-mix(in_srgb,var(--primary)_40%,var(--border))]"
             >
-              <h3 className="text-xl font-semibold text-[var(--text)]">{song.title}</h3>
+              <h3 className="text-xl font-semibold text-[var(--text)]">
+                {song.title}
+              </h3>
               <p className="mt-1 text-sm text-[var(--text-soft)]">{song.artist}</p>
 
               <div className="mt-4 flex flex-wrap gap-2">
@@ -139,13 +153,13 @@ export default async function SongsPage({ searchParams }: SongsPageProps) {
               </div>
 
               <div className="mt-4 rounded-xl border border-[var(--border)] bg-[var(--bg-muted)] p-3 text-sm leading-relaxed text-[var(--text-soft)]">
-                {song.lyricsSample.slice(0, 4).map((line) => (
+                {(song.lyricsSample ?? []).slice(0, 4).map((line) => (
                   <p key={line}>{line}</p>
                 ))}
               </div>
 
               <div className="mt-4 flex flex-wrap gap-2">
-                {song.tags.map((tag) => (
+                {(song.tags ?? []).map((tag) => (
                   <span
                     key={tag}
                     className="rounded-full bg-[color-mix(in_srgb,var(--primary)_12%,transparent)] px-2.5 py-1 text-xs font-medium text-[var(--text)]"

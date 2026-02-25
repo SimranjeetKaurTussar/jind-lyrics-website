@@ -5,20 +5,19 @@ export default function Footer() {
     <footer className="border-t border-[var(--border)] bg-[color-mix(in_srgb,var(--bg-muted)_80%,transparent)]">
       <div className="container flex flex-col gap-4 py-8 text-sm text-[var(--text-soft)] md:flex-row md:items-center md:justify-between">
         <div>
-          © {year} JIND. All rights reserved.
-          <p className="mt-1 text-xs">Built with ACD</p>
+         Copyright © {year} JIND. All rights reserved.
         </div>
 
         <div className="flex items-center gap-3">
-          <a href="#" className="cta-link px-4 py-2 text-xs">
+          <a href="https://www.instagram.com/jindx0" className="cta-link px-4 py-2 text-xs">
             Instagram
           </a>
-          <a href="#" className="cta-link px-4 py-2 text-xs">
+          <a href="https://www.youtube.com/@gurieemusic4580" className="cta-link px-4 py-2 text-xs">
             YouTube
           </a>
-          <a href="#" className="cta-link px-4 py-2 text-xs">
+          {/* <a href="#" className="cta-link px-4 py-2 text-xs">
             Spotify
-          </a>
+          </a> */}
         </div>
       </div>
     </footer>

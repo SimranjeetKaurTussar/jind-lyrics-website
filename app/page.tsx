@@ -19,20 +19,20 @@ const stats = [
 
 const testimonials = [
   {
-    name: "Aman Virk",
+    name: "Billa",
     role: "Independent Singer",
     quote:
       "JIND turned a rough melody into a polished track-ready lyric in one session.",
   },
   {
-    name: "Kriti Beats",
+    name: "Harjiwan",
     role: "Music Producer",
     quote:
       "Strong hooks, clear structure, and super easy to collaborate with.",
   },
   {
-    name: "RDX Label Team",
-    role: "A&R",
+    name: "Punjab Made",
+    role: "Presenter",
     quote:
       "Reliable delivery and writing quality that immediately builds artist trust.",
   },
@@ -81,7 +81,7 @@ export default function HomePage() {
               Explore Songs
             </Link>
             <a
-              href="https://wa.me/911234567890"
+              href="https://wa.me/918289037537"
               target="_blank"
               rel="noreferrer"
               className="cta-link px-5 py-3"
@@ -154,7 +154,7 @@ export default function HomePage() {
           that connect instantly.
         </p>
         <a
-          href="https://wa.me/911234567890"
+          href="https://wa.me/918289037537"
           target="_blank"
           rel="noreferrer"
           className="cta-link mt-7 inline-block bg-[var(--primary)] px-6 py-3 text-white hover:bg-[var(--primary-soft)]"

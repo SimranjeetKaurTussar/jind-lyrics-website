@@ -4,7 +4,7 @@ const plans = [
   {
     name: "Hook / Chorus",
     badge: "Starter",
-    price: "Starting at ₹4,999",
+    price: "Starting at ₹40,000",
     description:
       "High-retention Punjabi hooks engineered for short-form virality and instant recall.",
     features: [
@@ -17,7 +17,7 @@ const plans = [
   {
     name: "Full Song Lyrics",
     badge: "Most Popular",
-    price: "Starting at ₹12,999",
+    price: "Starting at ₹50,000",
     description:
       "Complete lyrical architecture from opening line to closing impact, optimized for release.",
     features: [
@@ -91,13 +91,11 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="grid gap-5 md:grid-cols-3">
+      <section className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 ">
         {plans.map((plan, index) => (
           <article
             key={plan.name}
-            className={`group rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[var(--shadow)] transition duration-300 hover:-translate-y-1 hover:border-[color-mix(in_srgb,var(--primary)_42%,var(--border))] hover:shadow-[0_20px_40px_-28px_color-mix(in_srgb,var(--primary)_45%,transparent)] ${
-              index === 1 ? "ring-1 ring-[var(--ring)]" : ""
-            }`}
+            className={`group rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[var(--shadow)] transition duration-300 hover:-translate-y-1 hover:border-[color-mix(in_srgb,var(--primary)_42%,var(--border))] hover:shadow-[0_20px_40px_-28px_color-mix(in_srgb,var(--primary)_45%,transparent)] hover:ring-1 ring-[var(--ring)]`}
           >
             <p className="inline-flex rounded-full border border-[var(--border)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--text-soft)]">
               {plan.badge}
@@ -118,7 +116,7 @@ export default function ServicesPage() {
             </ul>
 
             <a
-              href="https://wa.me/911234567890"
+              href="https://wa.me/918289037537"
               target="_blank"
               rel="noreferrer"
               className="cta-link mt-6 inline-flex items-center bg-[var(--primary)] px-4 py-2.5 text-white hover:bg-[var(--primary-soft)]"
@@ -157,7 +155,7 @@ export default function ServicesPage() {
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <a
-            href="https://wa.me/911234567890"
+            href="https://wa.me/918289037537"
             target="_blank"
             rel="noreferrer"
             className="cta-link bg-[var(--primary)] px-6 py-3 text-white hover:bg-[var(--primary-soft)]"

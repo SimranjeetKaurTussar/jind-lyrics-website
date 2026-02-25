@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Song } from "../../lib/songs";
 
 type SongCardProps = {
@@ -14,9 +15,9 @@ export default function SongCard({ song }: SongCardProps) {
       <p className="mt-1 text-sm text-[var(--text-soft)]">{song.artist}</p>
       <p className="mt-4 text-sm text-[var(--text-soft)]">{song.vibe}</p>
       <p className="mt-3 text-sm font-medium text-[var(--text)]">Duration: {song.duration}</p>
-      <div className="mt-5 text-sm font-semibold text-[var(--primary)] group-hover:text-[var(--primary-soft)]">
+      <Link href={`/songs`} className="mt-5 text-sm font-semibold text-[var(--primary)] group-hover:text-[var(--primary-soft)]">
         Read lyrics preview →
-      </div>
+      </Link>
     </article>
   );
 }
