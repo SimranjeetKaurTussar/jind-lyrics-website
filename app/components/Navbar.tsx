@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ThemeToggle from "./ThemeToggle";
 
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/songs", label: "Songs" },
+  { href: "/services", label: "Services" },
   { href: "/#work", label: "Work" },
   { href: "/#about", label: "About" },
   { href: "/#contact", label: "Contact" },
@@ -16,10 +17,24 @@ const navLinks = [
 export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const [activeHash, setActiveHash] = useState("");
+
+  useEffect(() => {
+    const syncHash = () => {
+      setActiveHash(window.location.hash);
+    };
+
+    syncHash();
+    window.addEventListener("hashchange", syncHash);
+    return () => window.removeEventListener("hashchange", syncHash);
+  }, [pathname]);
 
   const linkClasses = (href: string) => {
     const isHashLink = href.includes("#");
-    const isActive = isHashLink ? pathname === "/" : pathname === href;
+    const hash = isHashLink ? href.slice(href.indexOf("#")) : "";
+    const isActive = isHashLink
+      ? pathname === "/" && activeHash === hash
+      : pathname === href;
 
     return [
       "rounded-full px-3 py-2 text-sm font-medium transition-colors",
@@ -50,7 +65,7 @@ export default function Navbar() {
 
           <button
             type="button"
-            className="theme-toggle sm:hidden"
+            className="grid h-10 w-10 place-items-center rounded-full border border-[var(--border)] bg-[color-mix(in_srgb,var(--surface)_80%,transparent)] text-[var(--text)] transition hover:bg-[color-mix(in_srgb,var(--primary)_12%,transparent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ring)] sm:hidden"
             onClick={() => setIsOpen((current) => !current)}
             aria-expanded={isOpen}
             aria-controls="mobile-nav"
