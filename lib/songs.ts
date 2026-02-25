@@ -81,3 +81,8 @@ export const songs: Song[] = [
     tags: ["Rap", "Urban", "Stage"],
   },
 ];
+
+
+export function findSongById(id: string) {
+  return songs.find((song) => song.id === id);
+}
